@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.mybatis.mapper.PostMapper">
+    <!-- 1. 게시글 추가 -->
+    <insert id="insert" parameterType="PostVO">
+        INSERT INTO TBL_POST(ID, POST_TITLE, POST_CONTENT, MEMBER_ID)
+        VALUES (SEQ_POST.NEXTVAL, #{postTitle}, #{postContent}, #{memberId})
+    </insert>
+
+    <!-- 2. 게시글 전체 조회 -->
+    <select id="selectAll" resultType="PostDTO">
+        SELECT
+            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID, TBP.POST_READ_COUNT,
+            TBM.MEMBER_EMAIL, TBM.MEMBER_NAME
+        FROM TBL_POST TBP
+                 JOIN TBL_MEMBER TBM
+                      ON TBP.MEMBER_ID = TBM.ID
+    </select>
+
+    <!-- 3. 게시글 단일 조회 -->
+    <select id="select" parameterType="Long" resultType="PostDTO">
+        SELECT
+            TBP.ID, TBP.POST_TITLE, TBP.POST_CONTENT, TBP.MEMBER_ID, TBP.POST_READ_COUNT,
+            TBM.MEMBER_EMAIL, TBM.MEMBER_NAME
+        FROM TBL_POST TBP
+                 JOIN TBL_MEMBER TBM
+                      ON TBP.MEMBER_ID = TBM.ID
+        WHERE TBP.ID = #{id}
+    </select>
+
+    <!-- 4. 게시글 수정 -->
+    <update id="update" parameterType="PostVO">
+        UPDATE TBL_POST
+        SET POST_TITLE = #{postTitle}, POST_CONTENT = #{postContent}
+        WHERE ID = #{id}
+    </update>
+
+    <!-- 5. 조회수 증가 -->
+    <update id="updatePostReadCount" parameterType="Long">
+        UPDATE TBL_POST
+        SET POST_READ_COUNT = POST_READ_COUNT + 1
+        WHERE ID = #{id}
+    </update>
+
+    <!-- 6. 게시글 삭제 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_POST
+        WHERE ID = #{id}
+    </delete>
+
+    <select id="findByPostReadCount" parameterType="Long" resultType="int">
+        SELECT POST_READ_COUNT
+        FROM TBL_POST
+        WHERE ID = #{id}
+    </select>
+</mapper>
