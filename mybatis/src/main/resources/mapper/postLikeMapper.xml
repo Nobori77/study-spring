@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.mybatis.mapper.PostLikeMapper">
+
+    <!-- 좋아요 누르기 -->
+    <insert id="insert" parameterType="PostLikeVO">
+        INSERT INTO TBL_POST_LIKE
+        VALUES (SEQ_POST_LIKE.NEXTVAL, #{memberId}, #{postId})
+    </insert>
+
+    <!-- 좋아요 취소 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_POST_LIKE
+        WHERE ID = #{id}
+    </delete>
+</mapper>

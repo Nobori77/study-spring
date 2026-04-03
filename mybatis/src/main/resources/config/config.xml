@@ -13,8 +13,11 @@
         <!-- vo alias -->
         <typeAlias type="com.app.mybatis.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
         <typeAlias type="com.app.mybatis.domain.vo.PostVO" alias="PostVO"></typeAlias>
+        <typeAlias type="com.app.mybatis.domain.vo.PostLikeVO" alias="PostLikeVO"></typeAlias>
 
         <!-- dto alias  -->
         <typeAlias type="com.app.mybatis.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
+        <typeAlias type="com.app.mybatis.domain.dto.PostCountDTO" alias="PostCountDTO"></typeAlias>
+        <typeAlias type="com.app.mybatis.domain.dto.PostResponseDTO" alias="PostResponse"></typeAlias>
     </typeAliases>
 </configuration>
