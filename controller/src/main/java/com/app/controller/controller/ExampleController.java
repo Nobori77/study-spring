@@ -1,5 +1,6 @@
 package com.app.controller.controller;
 
+import com.app.controller.domain.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,5 +73,27 @@ public class ExampleController {
     public String ex05(@ModelAttribute("name") String name, @ModelAttribute("hobby") String hobby) {
         log.info("name : {}, hobby : {}", name, hobby);
         return "ex05";
+    }
+
+    @GetMapping("ex06")
+    public String goToEx06() {
+        return "ex06";
+    }
+
+    @GetMapping("ex06-complete")
+    public String goToEx06Complete(
+            @ModelAttribute("memberName") String memberName
+    ) {
+        return "ex06-complete";
+    }
+//  회원가입 완료후
+//  페이지에 OOO님 환영합니다 출력
+    @PostMapping("ex06")
+    public String ex06(MemberVO memberVO) {
+        log.info("응답이 들어옴!");
+        log.info("memberVO : {}", memberVO);
+
+//        return "redirect:/ex/ex06-complete?memberName=" + memberVO.getMemberName();
+        return "redirect:/ex/ex06-complete";
     }
 }
