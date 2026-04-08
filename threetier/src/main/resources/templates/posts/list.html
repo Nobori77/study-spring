@@ -31,28 +31,6 @@
 </head>
 <body>
 <h1>게시판 목록</h1>
-
-<table>
-    <thead>
-    <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>내용</th>
-        <th>조회수</th>
-        <th>작성자</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="post : ${posts}">
-        <td th:text="${post.id}"></td>
-        <td th:text="${post.postTitle}"></td>
-        <td th:text="${post.postContent}"></td>
-        <td th:text="${post.postReadCount}"></td>
-        <td th:text="${post.memberName}"></td>
-    </tr>
-    </tbody>
-</table>
-
     <th:block th:if="${#lists.size(posts) != 0}">
         <table>
             <tr>
@@ -64,7 +42,9 @@
             <th:block th:each="post: ${posts}">
                 <tr th:object="${post}">
                     <td th:text="*{id}"></td>
-                    <td th:text="*{postTitle}"></td>
+                    <td>
+                        <a th:href="@{/posts/read(id=*{id})}" th:text="*{postTitle}"></a>
+                    </td>
                     <td th:text="*{postContent}"></td>
                     <td th:text="*{postReadCount}"></td>
                 </tr>

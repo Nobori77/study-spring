@@ -1,4 +1,4 @@
-package com.app.controller.domain.dto;
+package com.app.threetier.domain.dto;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

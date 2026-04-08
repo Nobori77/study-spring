@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>정보 수정</title>
+</head>
+<body>
+<form th:action="@{/members/update}" method="post" th:object="${member}">
+    <input type="hidden" th:field="*{id}" value="*{id}">
+    <input type="text" th:field="*{memberEmail}" th:value="*{memberEmail}" placeholder="이메일" />
+    <input type="password" th:field="*{memberPassword}" th:value="*{memberPassword}" placeholder="비밀번호" />
+    <input type="text" th:field="*{memberName}" th:value="*{memberName}" placeholder="이름" />
+    <button type="button">회원 수정</button>
+</form>
+</body>
+<script>
+    const inputs = document.querySelectorAll("input");
+    const btn = document.querySelector('button');
+    const form = document.querySelector('form');
+
+    btn.addEventListener('click', () => {
+        for(let input of inputs) {
+            if(!input.value) return alert(input.name + " 값이 없습니다.")
+        }
+        form.submit();
+    });
+</script>
+</html>
