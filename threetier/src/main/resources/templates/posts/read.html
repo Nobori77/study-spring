@@ -12,7 +12,9 @@
         <p th:text="*{postTitle}"></p>
         <p th:text="*{postContent}"></p>
         <p th:text="*{memberName}"></p>
+        <p th:text="*{postReadCount}"></p>
     </th:block>
-    <button th:onclick="|window.location.href='/posts/update?id=${post.id}'|">정보 수정</button>
+    <button th:onclick="|window.location.href='/posts/update?id=${post.id}'|">게시글 수정</button>
+    <button th:onclick="|window.location.href='/posts/delete-ok?id=${post.id}'|">게시글 삭제</button>
 </body>
 </html>

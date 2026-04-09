@@ -1,6 +1,7 @@
 package com.app.threetier.controller;
 
 import com.app.threetier.domain.dto.PostDTO;
+import com.app.threetier.domain.vo.PostVO;
 import com.app.threetier.mapper.PostMapper;
 import com.app.threetier.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,15 @@ public class PostController {
         model.addAttribute("post", postService.getPost(id));
     }
 
-    @PostMapping("/update")
-    public RedirectView update(PostDTO postDTO) {
-        postService.update(postDTO);
+    @PostMapping("/update-ok")
+    public RedirectView update(PostVO postVO) {
+        postService.update(postVO);
+        return new RedirectView("/posts/list");
+    }
+
+    @GetMapping("/delete-ok")
+    public RedirectView delete(Long id) {
+        postService.delete(id);
         return new RedirectView("/posts/list");
     }
 }

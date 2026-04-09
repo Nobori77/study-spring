@@ -16,6 +16,8 @@ import java.util.Optional;
 public interface PostService {
     public List<PostDTO> getPosts();
     public PostDTO getPost(Long id);
-    public PostDTO update(PostDTO postDTO);
+    public PostVO update(PostVO postVO);
+    public void updateReadCount(Long id);
+    public void delete(Long id);
 
 }

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>상품 목록</title>
+    <style>
+        table, th, td{
+            border : 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>상품 목록</h1>
+<th:block th:if="${#lists.size(products) != 0}">
+    <table>
+        <tr>
+            <th>번호</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>재고</th>
+            <th>브랜드</th>
+        </tr>
+        <th:block th:each="product: ${products}">
+            <tr th:object="${product}">
+                <td th:text="*{id}"></td>
+                <td>
+                    <a th:href="@{/products/read(id=*{id})}" th:text="*{productName}"></a>
+                </td>
+                <td th:text="*{productPrice}"></td>
+                <td th:text="*{productStock}"></td>
+                <td th:text="*{productBrand}"></td>
+            </tr>
+        </th:block>
+    </table>
+</th:block>
+<th:block th:unless="${#lists.size(products) !=0}">
+    <h1>상품이 없습니다</h1>
+</th:block>
+</body>
+</html>

@@ -18,10 +18,20 @@
         WHERE TBP.ID = #{id}
     </select>
 
-    <select id="update" parameterType="PostDTO">
+    <select id="update" parameterType="PostVO">
         UPDATE TBL_POST
         SET POST_TITLE = #{postTitle}, POST_CONTENT = #{postContent}
         WHERE ID = #{id}
     </select>
 
+    <select id="updateReadCount" parameterType="Long">
+        UPDATE TBL_POST
+        SET POST_READ_COUNT = POST_READ_COUNT + 1
+        WHERE ID = #{id}
+    </select>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_POST
+        WHERE ID = #{id}
+    </delete>
 </mapper>

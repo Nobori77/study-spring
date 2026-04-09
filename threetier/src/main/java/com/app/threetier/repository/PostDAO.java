@@ -25,7 +25,15 @@ public class PostDAO {
         return postMapper.select(id);
     }
 
-    public PostDTO update(PostDTO postDTO){
-        return postMapper.update(postDTO);
+    public PostVO update(PostVO postVO){
+        return postMapper.update(postVO);
+    }
+
+    public void updateReadCount(Long id){
+        postMapper.updateReadCount(id);
+    }
+
+    public void delete(Long id){
+        postMapper.delete(id);
     }
 }

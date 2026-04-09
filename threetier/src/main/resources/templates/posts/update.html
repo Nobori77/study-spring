@@ -8,11 +8,12 @@
     <title>게시글 수정</title>
 </head>
 <body>
-<form th:action="@{/posts/update}" method="post" th:object="${post}">
+<form th:action="@{/posts/update-ok}" method="post" th:object="${post}">
     <input type="hidden" th:field="*{id}" value="*{id}">
     <input type="text" th:field="*{postTitle}" th:value="*{PostTitle}" placeholder="제목을 입력하세요" />
     <input type="text" th:field="*{postContent}" th:value="*{PostContent}" placeholder="내용을 입력하세요" />
     <button type="submit">게시글 수정</button>
+    <button th:onclick="|window.location.href='/posts/list'|">수정 취소</button>
 </form>
 </body>
 </html>

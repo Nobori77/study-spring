@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface PostMapper {
     public List<PostDTO> selectAll();
     public Optional<PostDTO> select(Long id);
-    public PostDTO update(PostDTO postDTO);
+    public PostVO update(PostVO postVO);
+    public void updateReadCount(Long id);
+    public void delete(Long id);
 }

@@ -5,12 +5,10 @@ import com.app.threetier.domain.vo.PostVO;
 import com.app.threetier.exception.PostException;
 import com.app.threetier.repository.PostDAO;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 // 예외처리
 // 트랜잭션 관리
@@ -22,6 +20,7 @@ import java.util.Optional;
 //@Transactional
 public class PostServiceImpl implements PostService {
     private final PostDAO postDAO;
+    private final PostVO postVO;
 
     @Override
     public List<PostDTO> getPosts() {
@@ -30,10 +29,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPost(Long id) {
+        postDAO.updateReadCount(id);
         return postDAO.findById(id).orElseThrow(() -> new PostException("게시물을 찾을 수 없습니다."));
     }
 
-    public PostDTO update(PostDTO postDTO) {
-        return postDAO.update(postDTO);
+    @Override
+    public PostVO update(PostVO postVO) {
+        postDAO.update(postVO);
+        return postVO;
+    }
+
+    @Override
+    public void updateReadCount(Long id) {
+        postDAO.updateReadCount(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        postDAO.delete(id);
     }
 }

@@ -9,5 +9,6 @@ public class PostVO {
     private Long id;
     private String postTitle;
     private String postContent;
-    private int postReadCount;
+    private Long postReadCount;
+    private Long memberId;
 }
