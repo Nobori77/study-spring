@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>점수</title>
+</head>
+<body>
+<form th:object="${student}">
+    <div>
+        <span>학생 이름</span>
+        <span th:text="*{studentName} + '님'" ></span>
+    </div>
+    <div>
+        <span>국어 점수</span>
+        <span th:text="*{kor} + '점'"></span>
+    </div>
+    <div>
+        <span>수학 점수</span>
+        <span th:text="*{math} + '점'"></span>
+    </div>
+    <div>
+        <span>영어 점수</span>
+        <span th:text="*{eng} + '점'"></span>
+    </div>
+    <div>
+        <span>총 점</span>
+        <span th:text="*{total} + '점'"></span>
+    </div>
+    <div>
+        <span>평균 점수</span>
+        <span th:text="*{average} + '점'"></span>
+    </div>
+</form>
+</body>
+</html>

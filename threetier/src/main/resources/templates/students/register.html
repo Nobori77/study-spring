@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>학생 등록 페이지</title>
+</head>
+<body>
+<form th:action="@{/students/register}" method="post" th:object="${studentVO}">
+        <div>
+            <p>학생 이름</p>
+            <input type="text" th:field="*{studentName}" />
+        </div>
+        <div>
+            <p>수학 점수</p>
+            <input type="text" th:field="*{math}" />
+        </div>
+        <div>
+            <p>영어 점수</p>
+            <input type="text" th:field="*{eng}" />
+        </div>
+        <div>
+            <p>국어 점수</p>
+            <input type="text" th:field="*{kor}" />
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</body>
+</html>
