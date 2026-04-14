@@ -1,5 +1,6 @@
 package com.app.restful.mapper;
 
+import com.app.restful.domain.dto.MemberJoinRequestDTO;
 import com.app.restful.domain.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,6 +11,8 @@ import java.util.Optional;
 public interface MemberMapper {
     // 회원추가
     public void insert(MemberVO memberVO);
+    // 회원 이메일 유무 조회
+    public int existMemberEmail(String memberEmail);
     // 회원 전체 조회
     public List<MemberVO> selectAll();
     // 회원 단일 조회(id)

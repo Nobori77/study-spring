@@ -2,9 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.restful.mapper.MemberMapper">
     <insert id="insert" parameterType="MemberVO">
+        <selectKey resultType="Long" order="BEFORE" keyProperty="id">
+            SELECT SEQ_MEMBER.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO TBL_MEMBER
-        VALUES (SEQ_MEMBER.NEXTVAL, #{memberEmail}, #{memberPassword}, #{memberName})
+        VALUES (#{id}, #{memberEmail}, #{memberPassword}, #{memberName})
     </insert>
+    
+    <select id="existMemberEmail" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+<!--    <insert id="insert" parameterType="MemberJoinRequestDTO">-->
+<!--        INSERT INTO TBL_MEMBER-->
+<!--        VALUES (SEQ_MEMBER.NEXTVAL, #{memberEmail}, #{memberPassword}, #{memberName})-->
+<!--    </insert>-->
+
+
 
     <select id="selectAll" resultType="MemberVO">
         SELECT ID, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_NAME
@@ -26,7 +42,7 @@
 
     <select id="update" parameterType="MemberVO">
         UPDATE TBL_MEMBER
-        SET MEMBER_EMAIL = #{memberEmail}, MEMBER_PASSWORD = #{memberPassword}, MEMBER_NAME = #{memberName}
+        SET MEMBER_PASSWORD = #{memberPassword}, MEMBER_NAME = #{memberName}
         WHERE ID = #{id}
     </select>
 

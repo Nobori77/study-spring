@@ -18,5 +18,6 @@
         <!-- dto alias  -->
 <!--    <typeAlias type="com.app.mybatis.domain.dto.PostResponseDTO" alias="PostResponse"></typeAlias>-->
         <typeAlias type="com.app.restful.domain.dto.PostDTO" alias="PostDTO"></typeAlias>
+<!--        <typeAlias type="com.app.restful.domain.dto.MemberJoinRequestDTO" alias="MemberJoinRequestDTO"></typeAlias>-->
     </typeAliases>
 </configuration>
