@@ -6,7 +6,9 @@ import com.app.restful.domain.dto.MemberUpdateRequestDTO;
 import com.app.restful.domain.vo.MemberVO;
 import com.app.restful.exception.MemberException;
 import com.app.restful.repository.MemberDAO;
+import com.app.restful.repository.PostDAO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberDAO memberDAO;
+    private final PostDAO postDAO;
 
     @Override
     public void join(MemberJoinRequestDTO memberJoinRequestDTO) {
@@ -32,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void checkMemberEmailDuplicate(String memberEmail) {
         if(memberDAO.existMemberEmail(memberEmail) > 0){
-            throw new MemberException("이메일이 존재합니다.");
+            throw new MemberException("이메일이 존재합니다.", HttpStatus.CONFLICT);
         }
     }
 
@@ -57,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
        return memberDAO.findByEmailAndPassword(memberVO)
                 .map(MemberResponseDTO::from)
                 .orElseThrow(() -> {
-                    throw new MemberException("아이디 또는 비밀번호를 확인하세요");
+                    throw new MemberException("아이디 또는 비밀번호를 확인하세요", HttpStatus.UNAUTHORIZED);
                 });
     }
 
@@ -67,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 //        회원의 비밀번호를 제거 후 화면에 출력
         return memberDAO.findById(id)
                 .map(MemberResponseDTO::from)
-                .orElseThrow(() -> { throw new MemberException("회원을 찾을수 없습니다");});
+                .orElseThrow(() -> { throw new MemberException("회원을 찾을수 없습니다", HttpStatus.BAD_REQUEST);});
     }
 
     // 회원정보 수정
@@ -80,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void withdraw(Long id) {
         //  참조하는 POST 게시판의 삭제
+        postDAO.deleteByMemberId(id);
         memberDAO.delete(id);
     }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -18,16 +19,16 @@ public class PostDAO {
 
     //게시판 관련 서비스
 //- 게시글 목록 조회 서비스
-    public List<PostDTO> findAll(){
-        return postMapper.selectAll();
+    public List<PostDTO> getPosts(Map<String, String> orders){
+        return postMapper.selectAll(orders);
     }
 //- 게시글 상세보기 조회 서비스
-    public Optional<PostDTO> findById(Long id){
+    public Optional<PostDTO> getPost(Long id){
         return Optional.ofNullable(postMapper.select(id));
     }
 //- 게시글 작성 서비스
-    public void insert(PostDTO postDTO){
-        postMapper.insert(postDTO);
+    public void save(PostVO postVO){
+        postMapper.insert(postVO);
     }
 //- 게시글 수정 서비스
     public void update(PostVO postVO){
@@ -38,7 +39,7 @@ public class PostDAO {
         postMapper.delete(id);
     }
 //- 게시글 삭제(탈퇴시) 서비스
-    public void deleteAll(Long id){
-        postMapper.deleteAll(id);
+    public void deleteByMemberId(Long memberId){
+        postMapper.deleteByMemberId(memberId);
     }
 }
