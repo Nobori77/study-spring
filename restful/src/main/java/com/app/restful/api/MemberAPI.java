@@ -117,7 +117,7 @@ public class MemberAPI {
     // 회원 탈퇴 서비스
     @DeleteMapping("/{id}")
     @Operation(summary = "회원탈퇴 서비스", description = "회원 아이디로 회원탈퇴를 시켜주는 서비스")
-    @ApiResponse(responseCode = "204", description = "회원탈퇴 성공")
+    @ApiResponse(responseCode = "200", description = "회원탈퇴 성공")
     @ApiResponse(responseCode = "401", description = "토큰 없음")
     @ApiResponse(responseCode = "403", description = "권한 없음")
     @Parameter(
@@ -132,7 +132,7 @@ public class MemberAPI {
         memberService.withdraw(id);
 
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .status(HttpStatus.OK)
                 .body(ApiResponseDTO.of("회원탈퇴 성공"));
     }
 }

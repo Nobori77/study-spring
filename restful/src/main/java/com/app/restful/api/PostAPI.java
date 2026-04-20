@@ -109,7 +109,7 @@ public class PostAPI {
     // 게시글 삭제 서비스
     @DeleteMapping("/{id}")
     @Operation(summary = "게시글 삭제 서비스", description = "해당 번호로 게시글을 삭제하는 서비스")
-    @ApiResponse(responseCode = "204", description = "게시글 삭제 성공")
+    @ApiResponse(responseCode = "200", description = "게시글 삭제 성공")
     @ApiResponse(responseCode = "404", description = "게시글 없음")
     @Parameter(
             name = "id",
@@ -122,7 +122,7 @@ public class PostAPI {
         postService.remove(id);
 
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .status(HttpStatus.OK)
                 .body(ApiResponseDTO.of("게시글 삭제 성공"));
     }
 }
