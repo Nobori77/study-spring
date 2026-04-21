@@ -7,7 +7,7 @@ server:
 #  datasource:
 #    driver-class-name: oracle.jdbc.OracleDriver
 #    url: jdbc:oracle:thin:@//localhost:1521/XE
-#    username: hr
+#    username: scott
 #    password: 1234
 
 
@@ -30,4 +30,11 @@ spring:
       allowed-headers: "*"
       allow-credentials: "true" # 쿠키 사용 허용
 
+api:
+  service-key: "41fc3f63b0661d39ca4bf319ac7a73d5f92b397e920c46f250ce8b9adb8d11a5"
 
+  base-url: "https://apis.data.go.kr/B551011/KorPetTourService2"
+  area-based-list: "/areaBasedList2"
+
+  base-url2: "https://api.odcloud.kr/api"
+  uddi-9c79ebd1: "/15071311/v1/uddi:9c79ebd1-20e1-4e97-8e6a-b65e890fbe85"
