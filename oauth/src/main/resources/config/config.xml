@@ -11,11 +11,12 @@
 <!-- <typeAlias type="com.app.mybatis.mapper.MemberMapper" alias="MemberMapper"></typeAlias> -->
 
         <!-- vo alias -->
-    <typeAlias type="com.app.oauth.domain.vo.OauthMemberVO" alias="OauthMemberVO"></typeAlias>
+    <typeAlias type="com.app.oauth.domain.vo.MemberVO" alias="MemberVO"></typeAlias>
+    <typeAlias type="com.app.oauth.domain.vo.SocialMemberVO" alias="SocialMemberVO"></typeAlias>
 
 
         <!-- dto alias  -->
-<!--    <typeAlias type="com.app.mybatis.domain.dto.PostResponseDTO" alias="PostResponse"></typeAlias>-->
+    <typeAlias type="com.app.oauth.domain.dto.MemberDTO" alias="MemberDTO"></typeAlias>
 
     </typeAliases>
 </configuration>
