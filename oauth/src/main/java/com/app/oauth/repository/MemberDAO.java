@@ -22,6 +22,10 @@ public class MemberDAO {
     public Optional<MemberDTO> findMemberByMemberEmail(String memberEmail){
         return Optional.ofNullable(memberMapper.selectByMemberEmail(memberEmail));
     }
+    // 회원 조회 (id)
+    public Optional<MemberDTO> findMemberById(Long id){
+        return Optional.ofNullable(memberMapper.select(id));
+    }
 
     // 회원 가입 여부 조회(memberEmail)
     public boolean existsMemberByMemberEmail(String memberEmail){

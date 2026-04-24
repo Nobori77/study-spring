@@ -35,6 +35,15 @@
         VALUES(#{id}, #{memberEmail}, #{memberPassword}, #{memberPicture}, #{memberName}, #{memberNickname})
     </insert>
 
+    <select id="select" parameterType="Long" resultType="MemberDTO">
+        SELECT TBM.ID, TBM.MEMBER_EMAIL, TBM.MEMBER_PASSWORD, TBM.MEMBER_PICTURE, TBM.MEMBER_NAME, TBM.MEMBER_NICKNAME,
+               TBSM.SOCIAL_MEMBER_PROVIDER_ID, TBSM.SOCIAL_MEMBER_PROVIDER, TBSM.MEMBER_ID
+        FROM TBL_MEMBER TBM
+            JOIN TBL_SOCIAL_MEMBER TBSM
+            ON TBM.ID = TBSM.MEMBER_ID
+        WHERE TBM.ID = #{id}
+    </select>
+
     <select id="selectByMemberEmail" parameterType="String" resultType="MemberDTO">
         SELECT TBM.ID, TBM.MEMBER_EMAIL, TBM.MEMBER_PASSWORD, TBM.MEMBER_PICTURE, TBM.MEMBER_NAME, TBM.MEMBER_NICKNAME,
                TBSM.SOCIAL_MEMBER_PROVIDER_ID, TBSM.SOCIAL_MEMBER_PROVIDER, TBSM.MEMBER_ID

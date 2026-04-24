@@ -13,6 +13,8 @@ public interface MemberMapper {
 
     // 회원 조회 (memberEmail)
     public MemberDTO selectByMemberEmail(String memberEmail);
+    // 회원 조회(id)
+    public MemberDTO select(Long id);
     // 회원 가입 여부 조회 (memberEmail)
     public boolean existsMemberByMemberEmail(String memberEmail);
     public void update(MemberVO memberVO);
