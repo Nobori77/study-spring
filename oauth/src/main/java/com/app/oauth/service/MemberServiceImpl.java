@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 1. 중복 여부 검사
         // 중복된 값이 있으면 throw
-        if(memberDAO.existsMemberByMemberEmail(memberDTO.getMemberEmail())){
+        if(memberDAO.existsMemberByMemberEmail(memberDTO)){
             throw new MemberException("중복된 이메일 입니다.", HttpStatus.BAD_REQUEST);
         }
         // 중복된 값이 없으면 서비스 처리

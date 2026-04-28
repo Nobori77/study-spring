@@ -7,11 +7,20 @@ public interface AuthService {
     // 로컬 로그인
     public JwtTokenDTO login(MemberDTO memberDTO);
     // 소셜 로그인
-    public void socialLogin(MemberDTO memberDTO);
+    public JwtTokenDTO socialLogin(MemberDTO memberDTO);
+
     // Redis에 refresh Token 저장
+    public boolean saveRefreshToken(JwtTokenDTO jwtTokenDTO);
+
     // Redis에 저장된 refresh Token이 유효한지 검증
+    public boolean validateRefreshToken(JwtTokenDTO jwtTokenDTO);
+
     // Redis에 블랙리스트를 등록(로그아웃 시 토큰 무효화)
+    public boolean saveBlackListedToken(JwtTokenDTO jwtTokenDTO);
+
     // Redis에 블랙리스트 인지 검증
+    public boolean isBlackListedToken(JwtTokenDTO jwtTokenDTO);
+
     // refresh 토큰을 검증하고, 새로운 accessToken 발급 서비스
     public JwtTokenDTO reissueAccessToken(JwtTokenDTO jwtTokenDTO);
 }

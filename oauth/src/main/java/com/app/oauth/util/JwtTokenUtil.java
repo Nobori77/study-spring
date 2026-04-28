@@ -1,8 +1,10 @@
 package com.app.oauth.util;
 
+import com.app.oauth.exception.JwtTokenException;
 import io.jsonwebtoken.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -18,7 +20,7 @@ public class JwtTokenUtil {
     // Access 토큰 생성
     public String generateAccessToken(Map<String, String> claims){
         // 평균 1분 ~ 5분 (수업 테스트용 24시간)
-//        long expirationTimeInMillis = 1000 * 60 * 60 * 24;
+//        long expirationTimeInMillis = 1000L * 60 * 60 * 24;
         long expirationTimeInMillis = 1000L * 10;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
 
@@ -35,6 +37,7 @@ public class JwtTokenUtil {
     public String generateRefreshToken(Map<String, String> claims){
         // (평균 1주일 ~ 한달)
         long expirationTimeInMillis = 1000L * 60 * 60 * 24 * 30;
+//        long expirationTimeInMillis = 1000L * 10;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
 
         return Jwts
@@ -55,13 +58,15 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException();
+            throw new JwtTokenException("토큰 만료", HttpStatus.UNAUTHORIZED); // 400
         } catch (UnsupportedJwtException e) {
-            throw new RuntimeException();
+            throw new JwtTokenException("지원하지 않는 토큰", HttpStatus.BAD_REQUEST); // 400
         } catch (MalformedJwtException e) {
-            throw new RuntimeException();
+            throw new JwtTokenException("잘못된 토큰", HttpStatus.BAD_REQUEST); // 400
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException();
+            throw new JwtTokenException("토큰이 비어있습니다", HttpStatus.BAD_REQUEST); // 400
+        } catch (Exception e) {
+            throw new JwtTokenException("알 수 없는 토큰 오류", HttpStatus.BAD_REQUEST); // 400
         }
     }
     // 토큰 유효성 검사
