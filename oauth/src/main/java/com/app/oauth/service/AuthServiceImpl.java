@@ -8,7 +8,9 @@ import com.app.oauth.exception.JwtTokenException;
 import com.app.oauth.exception.MemberException;
 import com.app.oauth.repository.MemberDAO;
 import com.app.oauth.repository.SocialMemberDAO;
+import com.app.oauth.util.AuthCodeGenerator;
 import com.app.oauth.util.JwtTokenUtil;
+import com.app.oauth.util.SmsUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenUtil jwtTokenUtil;
     private final RedisTemplate redisTemplate;
     private final SocialMemberDAO socialMemberDAO;
+    private final SmsUtil smsUtil;
 
     //    일반 로그인
 //    순수데이터(JwtTokenDTO) 반환
@@ -48,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
     public JwtTokenDTO login(MemberDTO memberDTO) {
         // 사용자가 맞는지 (이메일, 비밀번호, 프로바이더(local)
 
-        // elary return
+        // early return
         MemberVO memberVO = MemberVO.from(memberDTO);
         log.info("memberDTO: {}", memberDTO);
         // 회원 유무 검사
@@ -127,7 +130,20 @@ public class AuthServiceImpl implements AuthService {
         jwtTokenDTO.setAccessToken(accessToken);
         jwtTokenDTO.setRefreshToken(refreshToken);
 
+        // redis에 토큰 저장
+        saveRefreshToken(jwtTokenDTO);
+
         return jwtTokenDTO;
+    }
+
+    // 실무에서는 Access Token을 받는것이 관래
+    @Override
+    public void logout(JwtTokenDTO jwtTokenDTO) {
+       if(validateRefreshToken(jwtTokenDTO)){
+           saveRefreshToken(jwtTokenDTO);
+       } else {
+           throw new JwtTokenException("권한 없음", HttpStatus.UNAUTHORIZED);
+       }
     }
 
     // Redis에 refresh Token 저장
@@ -169,13 +185,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean saveBlackListedToken(JwtTokenDTO jwtTokenDTO) {
         String refreshToken = jwtTokenDTO.getRefreshToken();
-        Long id = Long.parseLong((String)jwtTokenUtil.parseToken(refreshToken).get("id"));
-        String key = BLACKLIST_TOKEN_PREFIX + id;
+        Long refreshId = Long.parseLong((String)jwtTokenUtil.parseToken(refreshToken).get("id"));
+        String refreshKey = BLACKLIST_TOKEN_PREFIX + refreshId;
+
+        String accessToken = jwtTokenDTO.getAccessToken();
+        Long accessId = Long.parseLong((String)jwtTokenUtil.parseToken(accessToken).get("id"));
+        String accessKey = BLACKLIST_TOKEN_PREFIX + accessId;
 
         try {
-            redisTemplate.opsForSet().add(key, refreshToken);
+            redisTemplate.opsForSet().add(refreshKey, refreshToken);
+            redisTemplate.opsForSet().add(accessKey, accessToken);
             // TTL
-            redisTemplate.expire(key, 30, TimeUnit.DAYS);
+            redisTemplate.expire(refreshKey, 30, TimeUnit.DAYS);
+            redisTemplate.expire(accessKey, 1, TimeUnit.DAYS);
             return true;
         } catch (Exception e) {
             return false;
@@ -225,6 +247,74 @@ public class AuthServiceImpl implements AuthService {
         jwtTokenDTO.setAccessToken(newAccessToken);
 
         return jwtTokenDTO;
+    }
+    // 휴대폰 인증 코드 발송
+    @Override
+    public boolean sendMemberPhoneVerificationCode(String memberPhone) {
+//        memberPhone.replace("-", "");
+        String message = null;
+        String code = AuthCodeGenerator.generateAuthCode();
+        message = "[이음]\n인증코드를 입력해주세요.\n[" + code + "]";
+        smsUtil.sendOneMemberPhone(memberPhone, message);
+
+        // redis 저장
+        // phone : 01012341234 : 1234587
+
+        String key = "phone:" + memberPhone + ":" + code;
+
+        try {
+            redisTemplate.opsForValue().set(key, code, 3, TimeUnit.MINUTES);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 휴대폰 인증 코드 검증
+    @Override
+    public boolean verifyMemberPhoneVerificationCode(String memberPhone, String code) {
+        String key = "phone:" + memberPhone + ":" + code;
+        try {
+            String storedCode = String.valueOf(redisTemplate.opsForValue().get(key));
+            redisTemplate.delete(key);
+            return code.equals(storedCode);
+        } catch (Exception e) {
+            // 조회 오류
+            return false;
+        }
+    }
+
+    // 이메일 인증 코드 발송
+    @Override
+    public boolean sendMemberEmailVerificationCode(String memberEmail) {
+        String content = null;
+        String subject = null;
+        String code = AuthCodeGenerator.generateAuthCode();
+        subject = "[이음] 인증 번호";
+        content = "[이음]\n인증코드를 입력해주세요.\n[" + code + "]\n 오늘의 유머: 개발자가 좋아하는 계절은? 봄(Spring)";
+        smsUtil.sendMemberEmail(memberEmail, subject, content);
+
+        String key = "email:" + memberEmail + ":" + code;
+
+        try {
+            redisTemplate.opsForValue().set(key, code, 3, TimeUnit.MINUTES);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    // 이메일 인증 코드 검증
+    @Override
+    public boolean verifyMemberEmailVerificationCode(String memberEmail, String code) {
+        String key = "email:" + memberEmail + ":" + code;
+        try {
+            String storedCode = String.valueOf(redisTemplate.opsForValue().get(key));
+            redisTemplate.delete(key);
+            return code.equals(storedCode);
+        } catch (Exception e) {
+            // 조회 오류
+            return false;
+        }
     }
 }
 

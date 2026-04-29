@@ -63,7 +63,6 @@ public class AuthApi {
     public ResponseEntity<ApiResponseDTO> me(
             @CookieValue(name = "refreshToken", required = false) String refreshToken
     ){
-        log.info("{}", refreshToken);
         JwtTokenDTO jwtTokenDTO = new JwtTokenDTO();
         jwtTokenDTO.setRefreshToken(refreshToken);
         jwtTokenDTO = authService.reissueAccessToken(jwtTokenDTO);

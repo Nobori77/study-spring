@@ -19,9 +19,9 @@ public class ApiResponseDTO<T> {
         this.message = message;
     }
 
-    public ApiResponseDTO(boolean success, T data){
+    public ApiResponseDTO(boolean success, String message){
         this.success = success;
-        this.data = data;
+        this.message = message;
     }
 
     public ApiResponseDTO(String message, T data){
@@ -31,6 +31,9 @@ public class ApiResponseDTO<T> {
 
     public static <T>ApiResponseDTO<T> of(String message){
         return new ApiResponseDTO<>(message);
+    }
+    public static <T>ApiResponseDTO<T> of(boolean success, String message){
+        return new ApiResponseDTO<>(success, message);
     }
 
     public static <T>ApiResponseDTO<T> of(String message, T data){
