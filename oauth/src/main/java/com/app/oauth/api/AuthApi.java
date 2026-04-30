@@ -80,7 +80,7 @@ public class AuthApi {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
-                .body(ApiResponseDTO.of("토큰 재발급 완료", jwtTokenDTO));
+                .body(ApiResponseDTO.of(true,"토큰 재발급 완료", jwtTokenDTO));
     }
     // 소셜 로그인 -> security filter
     // 사용자 정보 조회

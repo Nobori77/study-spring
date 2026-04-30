@@ -20,8 +20,8 @@ public class JwtTokenUtil {
     // Access 토큰 생성
     public String generateAccessToken(Map<String, String> claims){
         // 평균 1분 ~ 5분 (수업 테스트용 24시간)
-//        long expirationTimeInMillis = 1000L * 60 * 60 * 24;
-        long expirationTimeInMillis = 1000L * 10;
+        long expirationTimeInMillis = 1000L * 60 * 60 * 24;
+//        long expirationTimeInMillis = 1000L * 10;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
 
         return Jwts

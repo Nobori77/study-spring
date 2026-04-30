@@ -37,6 +37,11 @@ public class MemberDAO {
         memberMapper.update(memberVO);
     }
 
+    // 회원 프로필사진 수정
+    public void updatePicture(MemberVO memberVO){
+        memberMapper.updatePicture(memberVO);
+    }
+
     // 회원 탈퇴
     public void delete(Long id){
         memberMapper.delete(id);

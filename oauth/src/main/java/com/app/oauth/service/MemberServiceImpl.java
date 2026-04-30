@@ -12,7 +12,9 @@ import com.app.oauth.repository.SocialMemberDAO;
 import com.app.oauth.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,9 @@ public class MemberServiceImpl implements MemberService {
     private final SocialMemberDAO socialMemberDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+
+//    @Value("${spring.cloud.aws.s3.base-url}")
+//    private String s3BaseUrl;
 
 
     // 회원 가입 서비스
@@ -79,11 +84,9 @@ public class MemberServiceImpl implements MemberService {
         return apiResponseDTO;
     }
 
-
+    // 토큰으로 회원 정보 조회
     @Override
-    public ApiResponseDTO me(String token) {
-        Claims claims = jwtTokenUtil.parseToken(token);
-        Long id = Long.parseLong(claims.get("id").toString());
+    public ApiResponseDTO me(Long id) {
 
         MemberDTO foundMember = memberDAO.findMemberById(id).orElseThrow(() -> {
             throw new MemberException("회원 조회 실패" , HttpStatus.BAD_REQUEST);
@@ -93,6 +96,16 @@ public class MemberServiceImpl implements MemberService {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO(true, "회원 조회 성공", memberResponseDTO);
 
         return apiResponseDTO;
+    }
+    // 회원 프로필 사진 수정
+    @Override
+    public ApiResponseDTO updatePicture(MemberVO memberVO) {
+        Map<String, Object> datas = new HashMap<>();
+//        String pictureUrl = s3BaseUrl + memberVO.getMemberPicture();
+//        memberVO.setMemberPicture(pictureUrl);
+        memberDAO.updatePicture(memberVO);
+        datas.put("updatedMemberPictureUrl", memberVO.getMemberPicture());
+        return ApiResponseDTO.of(true, "사진 변경 완료", datas);
     }
 }
 

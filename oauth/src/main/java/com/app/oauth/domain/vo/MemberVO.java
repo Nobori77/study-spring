@@ -20,7 +20,7 @@ public class MemberVO {
         memberVO.setId(memberDTO.getMemberId());
         memberVO.setMemberEmail(memberDTO.getMemberEmail());
         memberVO.setMemberPassword(memberDTO.getMemberPassword());
-        memberVO.setMemberPicture(memberDTO.getMemberPicture() != null ? memberDTO.getMemberPicture() : "/default.jpg");
+        memberVO.setMemberPicture(memberDTO.getMemberPicture() != null ? memberDTO.getMemberPicture() : "https://testapp-codefuling.s3.ap-northeast-2.amazonaws.com/cat.jpg");
         memberVO.setMemberName(memberDTO.getMemberName());
         memberVO.setMemberNickname(memberDTO.getMemberNickname() != null ? memberDTO.getMemberNickname() : "개복치 1단계");
         return memberVO;
