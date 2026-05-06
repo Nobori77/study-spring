@@ -2,6 +2,8 @@ package com.app.oauth.service;
 
 import com.app.oauth.domain.dto.response.ApiResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 import java.util.List;
 
@@ -13,5 +15,5 @@ public interface FileService  {
     public ApiResponseDTO uploadFiles(List<MultipartFile> uploadFiless);
 
     //  절대 경로를 숨기는 display
-    public  byte[] getDisplayPath(String fileName);
+    public ResponseBytes<GetObjectResponse> getDisplayPath(String fileName);
 }

@@ -10,6 +10,7 @@ import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.ByteArrayOutputStream;
@@ -147,16 +148,15 @@ public class AwsS3Util {
         return urls;
     }
 
-    // key -> image
-    public byte[] display(String key){
-       ResponseBytes objectAsBytes = s3Client.getObjectAsBytes(
+    // key -> ResponseBytes<GetObjectResponse>
+    public ResponseBytes<GetObjectResponse> display(String key){
+      return s3Client.getObjectAsBytes(
                 GetObjectRequest
                         .builder()
                         .bucket(buckket)
                         .key(key)
                         .build()
         );
-       return objectAsBytes.asByteArray();
     }
 
 
